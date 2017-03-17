@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      IT Core Infrastructure Enclave &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/it-core-infrastructure-enclave.html">IT Core Infrastructure Enclave</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<p><strong><em>DRAFT FOR COMMENT</em></strong>*</p>
+
+<hr />
+
+<h1 id="topics">Topics</h1>
+<ul>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="authentication-in-itci">Authentication in ITCI</a></li>
+  <li><a href="itci-network-environments">ITCI Network Environments</a>
+    <ul>
+      <li><a href="#itci">ITCI</a></li>
+      <li><a href="itci-management">ITCI.Management</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="overview">Overview</h1>
+
+<p>The IT Core Infrastructure (ITCI) Enclave is designed to hold primarily the core networking gear for IT services, such as the core router, the border router, the border firewall, and the PZ firewall.  Devices registered in ITCI must be managed by ITSD (Type 1), only IT Networking staff are permitted to register devices in the ITCI, and devices registered to ITCI are permitted to have networking interfaces in any network segment.</p>
+
+<h1 id="authentication-in-itci">Authentication in ITCI</h1>
+
+<p>All accounts in ITCI are considered privileged accounts, used for management and administration of core IT infrastructure.  These accounts are  indirectly managed through UCAMS, primarily as Other Logins for SecurID or for other multifactor authentication tools.  Network acess to the management interface for ITCI devices must be through an IT managed jump server (in Servers.Moderate) which enforces Level 4 authentication with a UCAMS IT privileged account.  From that jump server, authorized users may access the management console for devices.  Where feasible, management console authentication should be multifactor (Level 3 or better), such as using SecurID.  As a mechanism to aid in intrusion detection, the usernames for management interface authentication should only be used in the ITCI enclave, consistent with the requirement that a given credential should be used in no more than one Enclave.</p>
+
+<h1 id="itci-network-environments">ITCI Network Environments</h1>
+
+<p>ITCI consists of two network environments: the Enclave itself, and a zone for the management intefaces of the devices itself.</p>
+
+<p>&amp;&amp;&amp;&amp;&amp; BEW: Do we need more environments than this?</p>
+
+<h2 id="itci">ITCI</h2>
+
+<p>The ITCI Enclave is itself a network environment which has subnets assigned to it.  The device interfaces registered at the Enclave level are for enabling network traffic between other network environments (including enabling traffic to the Internet).  Only IT Networking staff can register interfaces in the ITCI network environment.</p>
+
+<p>No flows are defined for this network environment.  The IT networking staff will determine the structure of this environment and what kinds of traffic should be permitted.</p>
+
+<h2 id="itcimanagement">ITCI.Management</h2>
+
+<p>ITCI.Management is for the management interfaces for IT Core Infrastructure systems as well as for the communication channels needed for equipment functioning and logging.  For example, log traffic from the networking gear should originate from ITCI.management and transit to Servers.Monitoring.  The networking traffic associated networking gear needs for time, DNS, and authentication (RADIUS) should also originate from this network zone.  Addresses in this zone should be RFC 1918.</p>
+
+<p><img src="graphics/netflow-itci-management.png" alt="ITCI.Management Netflow" /></p>
+
+</section>
+</body>
+
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      MFA Quickstart Guide for macOS &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/console-mac-quickstart.html">MFA Quickstart Guide for macOS</a>
+  </h1>
+
+  <h3 id="before-you-begin">Before You Begin</h3>
+<ol>
+  <li>Visit a <a href="https://portal04.ornl.gov/sites/its/ornllogin/SitePages/MFAKioskLocations.aspx">PIN testing station</a> and confirm that you know the PIN to your badge. If you do not know the PIN to your badge, visit the badge office in the Visitors Center to get it reset.</li>
+  <li>Visit an enrollment station to get your eToken and set a PIN. If you have forgotten your PIN, visit an enrollment station to re-enroll your token.</li>
+</ol>
+
+<p><br /></p>
+<h3 id="install-smartcard-software">Install SmartCard Software</h3>
+
+<p><strong>Important:</strong> Once this software is installed, all UCAMS accounts will be required to use an eToken or physical SmartCard to login to this computer.<br />
+<strong>Important:</strong> This software will be automatically installed on all on-site computers beginning on September 28, 2016.</p>
+
+<ol>
+  <li>These steps must be performed while physically at ORNL and connected to the wired network.</li>
+  <li>Quit all running applications.</li>
+  <li>Install the <a href="munki://detail-smartcard_NIHAuthPlugin">SmartCard Login Plugin</a> from the Managed Software Center.
+    <ul>
+      <li>Your computer will reboot as part of the install.</li>
+    </ul>
+  </li>
+  <li><strong>If your computer in encrypted with FileVault, you still need to use your UCAMS password to unlock the drive on every (re)boot.</strong>
+<img src="images/console-mac-fv.png" alt="FileVault unlock" /></li>
+  <li>The computer will boot to the login window.
+    <ul>
+      <li>You will need to accept the DOE warning banner.
+<img src="images/console-mac-login.png" alt="login window" /></li>
+    </ul>
+  </li>
+  <li><strong>Wait 30 seconds and insert your eToken.</strong>
+    <ul>
+      <li>The 30 second waiting period is only needed the first time you login with an eToken.</li>
+    </ul>
+  </li>
+  <li>Your account should be recognized within a few seconds and you will be prompted for your PIN.
+<img src="images/console-mac-scardlogin.png" alt="login window" /></li>
+  <li>Enter your PIN and press <strong>return</strong>.</li>
+  <li>You may receive a warning about unlocking your keychain.
+<img src="images/console-mac-loginkeychainpw.png" alt="login window" /></li>
+  <li>Click <strong>Update Keychain Password</strong>.</li>
+  <li>Enter your UCAMS password and click OK.
+<img src="images/console-mac-loginkeychainpwchange.png" alt="login window" /></li>
+  <li>Your keychain password has now been set to your PIN.</li>
+</ol>
+
+<p><br /></p>
+<h3 id="notes-about-mfa">Notes About MFA</h3>
+<ul>
+  <li>You can use your eToken to elevate privileges or unlock your screen.</li>
+  <li>If you remove your eToken, your computer will revert back to using your UCAMS password for screensaver unlock and privilege elevation.</li>
+</ul>
+
+<p><br /></p>
+<h3 id="off-network-login">Off Network Login</h3>
+<p>There are limitations on what MFA methods can be used while off-site/off-network. As a general rule of thumb, you must continue to use the same method you used while at ORNL. Please consult the table below for a detailed breakdown.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Most recent MFA method you used to login (at the login screen)</th>
+      <th>MFA methods that can be used while off-site/off-network</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>eToken</td>
+      <td>eToken or site issued badge</td>
+    </tr>
+    <tr>
+      <td>site issued badge</td>
+      <td>eToken or site issued badge</td>
+    </tr>
+    <tr>
+      <td>HSPD12 badge</td>
+      <td>HSPD12 badge</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+<h3 id="special-instructions-when-changing-your-ucams-password">Special Instructions When Changing Your UCAMS Password</h3>
+
+<p>You do not need to change your UCAMS password as part of enabling MFA login on your Mac. However, you should follow the steps below the next time you are required to change your UCAMS password. These steps will ensure that your new password is cached to the computer because it is still needed for FileVault and as a fallback for screen unlock and privilege elevation.</p>
+
+<ol>
+  <li>Connect your Mac to the wired or wireless network.</li>
+  <li>Login with your UCAMS account.</li>
+  <li>Follow the directions in the email to <a href="https://portal.ornl.gov/Pages/UpdatePassword.aspx">change</a> your UCAMS password.</li>
+  <li>Remove your eToken from the computer.</li>
+  <li>Launch Applications -&gt; ORNL Solution Center -&gt; Utilities -&gt; Password Update.</li>
+  <li>Enter your new UCAMS password and click Continue.
+<img src="images/console-mac-pwupdate.png" alt="run the Password Update utility after a password change" /></li>
+  <li>Your UCAMS password change is now complete.</li>
+</ol>
+
+<p><br /></p>
+<h3 id="known-issues">Known Issues</h3>
+<ul>
+  <li>The <strong>Security &amp; Privacy</strong> system preference pane will not unlock with an eToken. You must remove your token and unlock the pane with your password.</li>
+  <li>Your wireless connection may not automatically reestablish when coming out of computer sleep mode. The workaround is to manually reconnect to the wireless network.</li>
+  <li>Screensaver unlock may not work with an eToken when coming out of computer sleep mode. If you experience difficulties, remove your eToken from the computer and unlock the screen with your UCAMS password.</li>
+</ul>
+
+<p><br /></p>
+<h2 id="advanced-users">Advanced Users</h2>
+<hr />
+
+<h3 id="apple-remote-desktop-ard-access-to-a-mfa-enabled-mac">Apple Remote Desktop (ARD) Access to a MFA Enabled Mac</h3>
+
+<p>ARD access will be disabled by default except to allow remote assistance invitations by the Solution Center. If you need ARD access to your computer, please request a <strong>Smart Card Authentication Enforcement Policy - Mac ARD</strong> exception through the <a href="http://home.ornl.gov/~dex/prod/">Device Exception System</a>. Devices with an approved exception will allow ARD access with a standard username and password, but you will need to explicitly authorize specific users in System Preferences -&gt; Sharing -&gt; Remote Management. You will be allowed to login with a standard username and password from an ARD session; use your PIN to unlock the login keychain.</p>
+
+<p><br /></p>
+<h3 id="ssh-access-to-a-mfa-enabled-mac">SSH Access to a MFA Enabled Mac</h3>
+
+<p>SSH access will be disabled by default except to allow access by IT accounts. If you need SSH access to your computer, please request a <strong>Smart Card Authentication Enforcement Policy - Mac SSH</strong> exception through the <a href="http://home.ornl.gov/~dex/prod/">Device Exception System</a>. Devices with an approved exception will allow SSH access with a standard username and password, but you will need to explicitly authorize specific users in System Preferences -&gt; Sharing -&gt; Remote Login.</p>
+
+<p><br /></p>
+<h3 id="vnc-access-to-a-mfa-enabled-mac">VNC Access to a MFA Enabled Mac</h3>
+
+<p>VNC access will be disabled in all circumstances because of security concerns.</p>
+
+<p><br /></p>
+<h3 id="exceptions-from-mfa-enforcement">Exceptions from MFA Enforcement</h3>
+
+<p>If you have a valid business reason why MFA cannot be enforced on your Mac, request a <strong>Smart Card Authentication Enforcement Policy</strong> exception through the <a href="http://home.ornl.gov/~dex/prod/">Device Exception System</a>.</p>
+
+<p><br /></p>
+<h3 id="remote-desktop-client">Remote Desktop Client</h3>
+
+<p>The Microsoft Remote Desktop Client does not currently support SmartCard passthrough. We are investigating other solutions, but in the interim please vote for this feature on the <a href="https://remotedesktop.uservoice.com/forums/287834-remote-desktop-for-mac/suggestions/17210378-add-smartcard-authentication-to-windows">user voice</a> site. You may also try using the Remote Desktop client from within a <a href="https://ornlaccess.ornl.gov">Citrix</a> desktop session.</p>
+
+
+</section>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      SSH Authentication with a SmartCard from Linux &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/ssh-client/linux.html">SSH Authentication with a SmartCard from Linux</a>
+  </h1>
+
+  <h3 id="client-prerequisites">Client Prerequisites</h3>
+<ul>
+  <li>HSPD-12 or LSSO (site issued) SmartCard badge. <strong>The eToken cannot be used for SSH.</strong></li>
+  <li>You must know your PIN (this can be reset at the badging office).</li>
+  <li><a href="../smartcard-readers.html">Supported</a> SmartCard reader for your desktop/laptop.</li>
+  <li>You must request access to the SSH jump servers before using them. See <a href="https://portal04.ornl.gov/sites/its/ornllogin/Wiki%20Pages1/JumpServersLookup.aspx">this</a> page for the server list.</li>
+</ul>
+
+<p><br /></p>
+<h3 id="fedora">Fedora</h3>
+
+<ol>
+  <li>Install OpenSC: dnf install opensc</li>
+  <li>Verify that your SmartCard reader can be seen: opensc-tool -l</li>
+  <li>Add the following to ~/.ssh/config</li>
+</ol>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard
+Host dmzv3login* meclogin* opslogin* orlogin* ranlogin*
+	PKCS11Provider /usr/lib64/pkcs11/opensc-pkcs11.so
+</code></pre>
+</div>
+
+<p><br /></p>
+<h3 id="rhel-6">RHEL 6</h3>
+
+<p><em>Not working as of 7/29/2016. The recommendation is to transition to RHEL 7.</em></p>
+
+<p><br /></p>
+<h3 id="rhel-7">RHEL 7</h3>
+
+<ol>
+  <li>Install OpenSC: yum install opensc</li>
+  <li>Verify that your SmartCard reader can be seen: opensc-tool -l</li>
+  <li>Add the following to ~/.ssh/config</li>
+</ol>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard
+Host dmzv3login* meclogin* opslogin* orlogin* ranlogin*
+	PKCS11Provider /usr/lib64/pkcs11/opensc-pkcs11.so
+</code></pre>
+</div>
+
+<p><br /></p>
+<h3 id="ubuntu-1404">Ubuntu 14.04</h3>
+
+<ol>
+  <li>Install OpenSC: sudo apt-get install opensc</li>
+  <li>Verify that your SmartCard reader can be seen: opensc-tool -l</li>
+  <li>Add the following to ~/.ssh/config</li>
+</ol>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard
+Host dmzv3login* meclogin* opslogin* orlogin* ranlogin*
+	PKCS11Provider /usr/lib/x86_64-linux-gnu/opensc-pkcs11.so
+</code></pre>
+</div>
+
+<p><br /></p>
+<h3 id="ubuntu-1604">Ubuntu 16.04</h3>
+
+<ol>
+  <li>Install OpenSC: sudo apt-get install opensc</li>
+  <li>Verify that your SmartCard reader can be seen: opensc-tool -l</li>
+  <li>Add the following to ~/.ssh/config</li>
+</ol>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard
+Host dmzv3login* meclogin* opslogin* orlogin* ranlogin*
+	PKCS11Provider /usr/lib/x86_64-linux-gnu/pkcs11/opensc-pkcs11.so
+</code></pre>
+</div>
+
+<p><br /></p>
+<h3 id="ubuntu-1610">Ubuntu 16.10</h3>
+
+<ol>
+  <li>Install OpenSC: sudo apt-get install opensc</li>
+  <li>Verify that your SmartCard reader can be seen: opensc-tool -l</li>
+  <li>Add the following to ~/.ssh/config</li>
+</ol>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard
+Host dmzv3login* meclogin* opslogin* orlogin* ranlogin*
+	PKCS11Provider /usr/lib/x86_64-linux-gnu/pkcs11/opensc-pkcs11.so
+</code></pre>
+</div>
+
+<p><br /></p>
+<h3 id="use-the-jump-servers-as-a-proxy">Use the jump servers as a proxy</h3>
+<p>In many instances it can be convenient to use the jump servers as a proxy when accessing your hosts in the DMZ and OPS. This simplifies the process of using SSH, SCP and SFTP to hosts in the other protection zones. You will be prompted for your credentials twice: the first prompt will be for your SmartCard PIN and the second prompt will be for your credentials on the destination server.</p>
+
+<ul>
+  <li>Append the lines below to ~/.ssh/config
+    <ul>
+      <li>Substitute the correct path to the opensc-pkcs11.so library on the ProxyCommand line (see above).</li>
+      <li>Replace the user names in &lt;&gt; with your PZ specific user name.</li>
+      <li>Add the correct destination server names to the <strong>Host</strong> lines. It is recommended that you type the short name followed by an asterisk.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code># SmartCard jump server proxy - DMZ
+Host dmz-server*
+   ProxyCommand ssh -I /path/to/opensc-pkcs11.so &lt;your-dmz-username&gt;@dmzv3login02.ornl.gov nc %h %p
+
+# SmartCard jump server proxy - OPS
+Host ops-server*
+   ProxyCommand ssh -I /path/to/opensc-pkcs11.so &lt;your-ops-username&gt;@opslogin02.ornl.gov nc %h %p
+</code></pre>
+</div>
+
+
+</section>
+</body>
+
+</html>

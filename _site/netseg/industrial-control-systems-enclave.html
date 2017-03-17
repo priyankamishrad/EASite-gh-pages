@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Industrial Control Systems Enclave &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/industrial-control-systems-enclave.html">Industrial Control Systems Enclave</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<ul>
+  <li><a href="#ics-enclave-overview">ICS Enclave Overview</a></li>
+  <li><a href="#authentication-in-ind">Authentication in ICS</a>
+    <ul>
+      <li><a href="#windows">Windows</a></li>
+      <li><a href="#linux">Linux</a></li>
+      <li><a href="#other-systems">Other Systems</a></li>
+      <li><a href="#applications">Applications</a></li>
+    </ul>
+  </li>
+  <li><a href="#ics-network-considerations">ICS Network Considerations</a></li>
+  <li><a href="#ics-zones">ICS Zones</a>
+    <ul>
+      <li><a href="#icssno">ICS.SNO</a></li>
+      <li><a href="#icssnocitrix">ICS.SNO.Citrix</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="ics-enclave-overview">ICS Enclave Overview</h1>
+
+<p>The Industrial Control System (ICS) enclave houses systems and devices used to control physical equipment and processes at ORNL.  The Confidentialy of data in this enclave is low, and the focus is on protecting system Integrity and Availability.</p>
+
+<p>At present, the only zone in ICS is SNO, which is used for control and management of &amp;&amp;&amp;&amp;&amp;.</p>
+
+<h1 id="authenication-in-ics">Authenication in ICS</h1>
+
+<p>The SNO zone has its own credential and management system (SNOCAMS), along with its own Active Directory infrastructure.  If and when additional zones are added to ICS, a decision will be needed whether to expand SNO to encompass those other zones or keep them separate.</p>
+
+<p>Standard User accounts within ICS are excluded from scope for Multifactor Authentication (MFA) requirements, per the DOE MFA implementation plan, as are service accounts.  MFA should be used where practical, but it is not required for standard user accounts.  Standard user accounts may have administrative privileges on one or more systems within ICS, consistent with the practice within Workstations that local administrative access by a system owner does not inherently make that account a Privileged User within the definitions of the DOE MFA implementation plan.</p>
+
+<p>However, MFA should be considered and used where practical, even for standard user accounts, as a matter of best practice.  ORNL Level 3 and Level 4 MFA credentials (e.g. PIV, LSSO, eToken, and SecurID) may be bound to ICS enclave credentials and used as cryptographic or One Time Password token generators.  System owners within ICS may choose more restrictive controls and require token generators that are restricted to the ICS enclave, one or more zones within ICS, or even specific systems within ICS.</p>
+
+<p>Accounts which have administrative rights within any ICS Active Directory domain or on enabling infrastructure (such as DHCP, DNS, time, Citrix, or LDAP services) are considered Privileged Accounts and Level 4 authentication is required for interactive login.  This may be achieved through use of LOA 4 jump servers to control remote network access and physical access controls for local (console) access.</p>
+
+<h2 id="windows">Windows</h2>
+
+<p>Windows systems in ICS must be joined to the SNO domain and make use of SNO domain credentials.</p>
+
+<h2 id="linux">Linux</h2>
+
+<p>Linux systems in ICS should use credentials managed via SNOCAMS.  At present, there is no OpenLDAP server for ICS (e.g no LDAPICS or LDAPSNO).  Linux systems may use LDAP bindings to the SNO Active Directory for attribute lookup.</p>
+
+<h2 id="other-systems">Other Systems</h2>
+
+<p>The ICS Enclave will include devices which cannot use ORNL credential management and configuration management tools but which are integral parts of industrial control systems.  Where practical, such devices should make use of isolated networks within ICS.  The use of local credentials should be documented in appropriate cybersecurity and business continuity plans.</p>
+
+<h2 id="applications">Applications</h2>
+
+<p>Applications hosted in ICS are only for use within this enclave.  Application authentication may make use of existing ORNL MFA tools, Level 2 credentials managed by SNOCAMS, and local credentials (as documented in cybersecurity and business continuity plans).</p>
+
+<h1 id="ics-network-considerations">ICS Network Considerations</h1>
+
+<p>Systems in ICS should use RFC 1918 addresses.</p>
+
+<p>All firewall exceptions into and out of ICS are at least Unusual.  Any firewall exception involving Internet access and ICS is a CISO Exception.</p>
+
+<p>Given the focus on system availability and integrity for ICS, strong preference should be given to providing core cyberinfrastructure services from within the enclave.</p>
+
+<p>Wireless networking is not used within SNO.  &amp;&amp;&amp;&amp;&amp; Is this true?</p>
+
+<h1 id="ics-zones">ICS Zones</h1>
+
+<h2 id="indsno">IND.SNO</h2>
+
+<p>ICS.SNO hosts all of the devices which are part of the overall SNO system.</p>
+
+<h3 id="indsnocitrix">IND.SNO.Citrix</h3>
+
+</section>
+</body>
+
+</html>

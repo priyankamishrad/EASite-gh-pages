@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      SmartCard Login for SSH on RHEL 7 &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/ssh-server/rhel7.html">SmartCard Login for SSH on RHEL 7</a>
+  </h1>
+
+  <ul>
+  <li>Prerequisites
+    <ul>
+      <li>All users of the system will need the Directory Server -&gt; LDAP User resource in <a href="https://ucams.ornl.gov">UCAMS</a></li>
+    </ul>
+  </li>
+  <li>Install packages
+    <div class="highlighter-rouge"><pre class="highlight"><code>yum install openssh-ldap openldap-clients
+</code></pre>
+    </div>
+  </li>
+  <li>Tweak /etc/openldap/ldap.conf
+    <div class="highlighter-rouge"><pre class="highlight"><code>  BASE	dc=ornl,dc=gov
+  URI		ldaps://ldapu.ornl.gov
+
+  #SIZELIMIT	12
+  #TIMELIMIT	15
+  #DEREF	never
+
+  TLS_CACERTDIR	/etc/openldap/cacerts
+</code></pre>
+    </div>
+  </li>
+  <li>Test ldapsearch
+    <div class="highlighter-rouge"><pre class="highlight"><code>ldapsearch -x
+</code></pre>
+    </div>
+  </li>
+  <li>Create directory for override SSH keys
+    <div class="highlighter-rouge"><pre class="highlight"><code>  mkdir /etc/ssh/keys
+  chown root:root /etc/ssh/keys
+  chmod 755 /etc/ssh/keys
+
+  for I in `ls /coreit/`; do
+  mkdir /etc/ssh/keys/$I;
+  chmod 700 /etc/ssh/keys/$I;
+  \cp /coreit/$I/.ssh/authorized_keys /etc/ssh/keys/$I/;
+  chown -R $I:$I /etc/ssh/keys/$I/;
+  done
+</code></pre>
+    </div>
+  </li>
+  <li>Configure LDAP lookup
+    <div class="highlighter-rouge"><pre class="highlight"><code>cp /usr/share/doc/openssh-ldap-6.6.1p1/ldap.conf /etc/ssh/
+</code></pre>
+    </div>
+  </li>
+  <li>Edit /etc/ssh/ldap.conf
+    <div class="highlighter-rouge"><pre class="highlight"><code>  uri ldaps://ldapu.ornl.gov
+  base ou=users,dc=ornl,dc=gov	
+  ldap_version 3
+  tls_checkpeer hard
+  tls_cacertdir /etc/openldap/cacerts	
+</code></pre>
+    </div>
+  </li>
+  <li>Test the lookup
+    <div class="highlighter-rouge"><pre class="highlight"><code>/usr/libexec/openssh/ssh-ldap-wrapper &lt;username&gt;
+</code></pre>
+    </div>
+  </li>
+  <li>Configure /etc/ssh/sshd_config<br />
+<strong>NOTE:</strong> Search for these options in the configuration file and comment out existing entries
+    <div class="highlighter-rouge"><pre class="highlight"><code>  # LDAP lookup for SmartCard derived SSH keys
+AuthorizedKeysCommand /usr/libexec/openssh/ssh-ldap-wrapper
+AuthorizedKeysCommandUser nobody
+PubkeyAuthentication yes
+AuthorizedKeysFile /etc/ssh/keys/%u/authorized_keys
+
+  # Require the use of SSH keys to login
+ChallengeResponseAuthentication no
+GSSAPIAuthentication no
+KerberosAuthentication no
+PasswordAuthentication no
+PermitRootLogin no
+
+  # Allow CoreIT from skynet1 only
+  Match User it7,itk,itz Address 160.91.1.221
+  	PubkeyAuthentication yes
+
+  # Allow ServiceNow and Tenable
+  Match User lan,z2z
+  	PubkeyAuthentication yes
+</code></pre>
+    </div>
+  </li>
+  <li>Test the SSHD configuration and restart the service.
+    <div class="highlighter-rouge"><pre class="highlight"><code>sshd -t -f /etc/ssh/sshd_config &amp;&amp; systemctl restart sshd
+</code></pre>
+    </div>
+  </li>
+  <li>Other tasks
+    <ul>
+      <li>Configure SecurID auth for sudo and su</li>
+      <li>On systems where alternate root login accounts exist, you may need to set PermitRootLogin to yes</li>
+      <li><a href="../home.html">Configure</a> your SSH client to use SmartCard auth when connecting to this server.</li>
+    </ul>
+  </li>
+</ul>
+
+
+</section>
+</body>
+
+</html>

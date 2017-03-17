@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Privileged Access to Unix/Linux Servers & Clusters in the Workstations (formerly RAN) Protection Zone (Quick Start Guide) &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/ran-level4-priv-quickstart.html">Privileged Access to Unix/Linux Servers & Clusters in the Workstations (formerly RAN) Protection Zone (Quick Start Guide)</a>
+  </h1>
+
+  <h2 id="privileges-cleanup">Privileges Cleanup</h2>
+
+<h3 id="1-review-the-list-of-systems-where-you-have-privileged-access">1. Review the list of systems where you have privileged access.</h3>
+<ul>
+  <li>[ ] The <a href="https://portal02.ornl.gov/sites/BI/_layouts/ReportServer/RSViewerPage.aspx?rv:RelativeReportUrl=/sites/bi/dashboards/deviceswprivaccess.rdl">Privileged Access Report</a> will show you where you have privileged access on servers and identify the overall system administrator in case you need assistance switching to a secondary account.</li>
+  <li>[ ] Remove your privileged access (sudo and alternate root accounts) from all Workstations PZ servers where it is not absolutely needed.</li>
+  <li>[ ] If you need only a limited set of privileges on a server—but not full root—remove your full privileges and grant access to the limited set of commands with sudo rules.</li>
+  <li>[ ] If there are remaining Workstations PZ servers where you need full root privileges, continue with the steps below.</li>
+</ul>
+
+<p><br /></p>
+<h2 id="preparing-your-account">Preparing Your Account</h2>
+
+<h3 id="1-obtain-a-secondary-ucams-account-dedicated-to-administering-servers-in-the-workstations-pz">1. Obtain a secondary UCAMS account dedicated to administering servers in the Workstations PZ.</h3>
+<ul>
+  <li>[ ] You can request a secondary UCAMS account by contacting the Solution Center (solution@ornl.gov or 865-241-6765). Please indicate that you need the “Unix/Linux for RAN” function under the “IT Privileged Access” resource as part of this request.</li>
+  <li>[ ] If you already have a secondary account, request the “Unix/Linux for RAN” function under the “IT Privileged Access” resource in <a href="https://ucams.ornl.gov">UCAMS</a> for that account and follow the instructions.</li>
+  <li>[ ] You might need to respond to multiple notifications to resend your UCAMS password.</li>
+</ul>
+
+<h3 id="2-request-a-des-exception-for-any-systems-that-cannot-enforce-the-privileged-access-policy">2. Request a DES exception for any systems that cannot enforce the <a href="mfa/ran-level4-priv-overview">privileged access policy.</a></h3>
+<ul>
+  <li>[ ] Request a <strong>Smart Card Authentication Enforcement Policy - Linux Privileged Access</strong> exception through the <a href="http://home.ornl.gov/~dex/prod/">Device Exception System.</a></li>
+  <li>[ ] Include a detailed business reason as to why the system cannot meet the policy.</li>
+</ul>
+
+<h3 id="3-test-your-access-to-the-workstations-pz-jump-servers">3. Test your access to the Workstations PZ jump servers.</h3>
+<ul>
+  <li>[ ] Configure your SSH client to use SmartCard authentication when connecting to the Workstations PZ jump servers (ranlogin01.ornl.gov / ranlogin02.ornl.gov).
+    <ul>
+      <li>[ ] <a href="mfa/ssh-client-linux">Linux</a></li>
+      <li>[ ] <a href="mfa/ssh-client-mac">Mac</a></li>
+      <li>[ ] <a href="mfa/ssh-client-win">Windows</a></li>
+    </ul>
+  </li>
+  <li>[ ] Test your access using your Workstations PZ privileged account.</li>
+</ul>
+
+<h3 id="4-add-your-secondary-account-to-every-workstations-pz-server-where-you-require-privileged-access-you-may-need-the-system-administrator-to-assist-with-these-steps">4. Add your secondary account to every Workstations PZ server where you require privileged access. You may need the system administrator to assist with these steps.</h3>
+<ul>
+  <li>[ ] Login to the server where you need privileges.</li>
+  <li>[ ] Elevate to root using ‘su -‘ or ‘sudo -i’ as appropriate for your configuration.</li>
+  <li>[ ] Run: wsadduser <your-ucams-secondary-userid></your-ucams-secondary-userid></li>
+  <li>[ ] When prompted that the user is not in the network database, type <strong>y</strong> to continue and manually enter the user details.
+<img src="images/ran-level4-priv-quickstart-wsadduser.png" alt="wsadduser" /></li>
+</ul>
+
+<p><br /></p>
+<h2 id="using-your-account">Using Your Account</h2>
+
+<h3 id="1-use-your-secondary-account-for-system-administration">1. Use your secondary account for system administration.</h3>
+<ul>
+  <li>[ ] Use a Workstations PZ jump server (followed by an SSH to the target server with your password) or SSH directly to the target server using <a href="mfa/home\#ssh-client-configuration-with-smartcard">SmartCard authentication</a>. Use your secondary account in both cases.</li>
+  <li>[ ] Your secondary account will have full sudo privileges.</li>
+  <li>[ ] If you need to SSH in directly with a root account, your SSH connection most originate from a Workstations PZ jump server.</li>
+  <li>[ ] root to root SSH is allowed using SSH keys if absolutely necessary. It is recommended that you use host restrictions (e.g. a from section) within the authorized_keys file.</li>
+  <li>[ ] It may take up to 60 minutes for the local privileged access group to refresh with newly added users.</li>
+</ul>
+
+<p>To force an immediate refresh of your system configuration:</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>/var/wscfengine3/bin/cf-agent -K
+</code></pre>
+</div>
+
+<h3 id="2-cleanup-privileged-access-assigned-to-your-primary-account">2. Cleanup privileged access assigned to your primary account.</h3>
+<p><strong>IMPORTANT:</strong> Do not follow these steps until after you have tested that your secondary userid has full privileges on the target server.</p>
+
+<ul>
+  <li>[ ] Remove full sudo rights form your primary userid or ask the system administrator to do it for you. This may involve removing the user from the sudo or wheel groups.</li>
+  <li>[ ] It is recommended that you remove any alternate root accounts that are associated with your userid and use sudo instead.</li>
+  <li>[ ] If you have any remaining primary or alternate root accounts that sync the password with your UCAMS userid (e.g. they contain [usr] in the GECOS field) change the username in the bracketed string to be your secondary userid.</li>
+</ul>
+
+
+</section>
+</body>
+
+</html>

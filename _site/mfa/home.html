@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Multifactor Authentication &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/home.html">Multifactor Authentication</a>
+  </h1>
+
+  <h3 id="mfa-login-at-the-console">MFA Login At The Console</h3>
+<ul>
+  <li><a href="console-mac-quickstart.html">macOS Quickstart Guide for the eToken</a></li>
+  <li><a href="console-mac.html">macOS Full Instructions</a></li>
+</ul>
+
+<p><br /></p>
+<h3 id="mfa-enforcement-for-linux-serversclusters-in-the-workstations-formerly-ran-protection-zone">MFA Enforcement for Linux Servers/Clusters in the Workstations (formerly RAN) Protection Zone</h3>
+<ul>
+  <li><a href="ran-level4-priv-overview.html">Overview</a></li>
+  <li><a href="ran-level4-priv-quickstart.html">Quickstart Guide</a></li>
+</ul>
+
+<p><br /></p>
+<hr />
+
+<h3 id="rdp-client-configuration-with-smartcard">RDP Client Configuration With SmartCard</h3>
+<ul>
+  <li><a href="rdp-client-mac.html">macOS</a></li>
+</ul>
+
+<p><br /></p>
+<hr />
+
+<h3 id="ssh-client-configuration-with-smartcard">SSH Client Configuration With SmartCard</h3>
+<ul>
+  <li><a href="ssh-client/linux.html">Linux</a></li>
+  <li><a href="ssh-client/mac.html">macOS</a></li>
+  <li><a href="ssh-client/win.html">Windows</a></li>
+</ul>
+
+<h3 id="ssh-jump-servers-with-smartcard-login">SSH Jump Servers With SmartCard Login</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Network Zone</th>
+      <th>Primary Server</th>
+      <th>Alternate Server</th>
+      <th>Getting Access</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DMZ</td>
+      <td>dmzv3login01.ornl.gov</td>
+      <td>dmzv3login02.ornl.gov</td>
+      <td>Request Linux access in <a href="https://dcams.ornl.gov">DCAMS</a></td>
+    </tr>
+    <tr>
+      <td>M/EC</td>
+      <td>meclogin01.ornl.gov</td>
+      <td>meclogin02.ornl.gov</td>
+      <td>Request Linux Jump Server -&gt; MEC SSH User in <a href="https://ucams.ornl.gov">UCAMS</a></td>
+    </tr>
+    <tr>
+      <td>OPS</td>
+      <td>opslogin01.ornl.gov</td>
+      <td>opslogin02.ornl.gov</td>
+      <td>Request Linux Jump Server -&gt; OPS SSH User in <a href="https://ucams.ornl.gov">UCAMS</a> with a secondary userid</td>
+    </tr>
+    <tr>
+      <td>Open Research</td>
+      <td>orlogin01.ornl.gov</td>
+      <td>orlogin02.ornl.gov</td>
+      <td>Request Linux Jump Server -&gt; Ooen Research SSH User in <a href="https://ucams.ornl.gov">UCAMS</a> with a dedicated secondary userid</td>
+    </tr>
+    <tr>
+      <td>Workstations (aka RAN)</td>
+      <td>ranlogin01.ornl.gov</td>
+      <td>ranlogin02.ornl.gov</td>
+      <td>Request Linux Jump Server -&gt; RAN SSH User in <a href="https://ucams.ornl.gov">UCAMS</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><br /></p>
+<hr />
+
+<h3 id="ssh-server-configuration-with-smartcard-login">SSH Server Configuration With SmartCard Login</h3>
+<ul>
+  <li><a href="ssh-server/rhel6.html">Red hat Enterprise Linux 6</a></li>
+  <li><a href="ssh-server/rhel7.html">Red hat Enterprise Linux 7</a></li>
+</ul>
+
+<p><br /></p>
+<hr />
+
+<h3 id="supported-card-readers">Supported Card Readers</h3>
+<ul>
+  <li><a href="smartcard-readers.html">All Platforms</a></li>
+</ul>
+
+</section>
+</body>
+
+</html>

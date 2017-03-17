@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      DMZ Enclave &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/dmz-enclave.html">DMZ Enclave</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<h1 id="topics">Topics</h1>
+<ul>
+  <li><a href="#dmz-enclave-overview">DMZ Enclave Overview</a></li>
+  <li><a href="#authentication-in-the-dmz">Authentication in the DMZ</a>
+    <ul>
+      <li><a href="#windows">Windows</a></li>
+      <li><a href="#linux">Linux</a></li>
+      <li><a href="#other-systems">Other Systems</a></li>
+      <li><a href="#applications">Applications</a></li>
+    </ul>
+  </li>
+  <li><a href="#dmz-zones">DMZ Zones</a>
+    <ul>
+      <li><a href="#external-services-low">External Services (Low)</a></li>
+      <li><a href="#external-services-moderate">External Services (Moderate)</a></li>
+      <li><a href="#internal-services">Internal Services</a></li>
+      <li><a href="#data-relay">Data &amp; Relay</a></li>
+      <li><a href="#proxy">Proxy</a></li>
+      <li><a href="#dlan">DLAN</a></li>
+      <li><a href="#related-zones-in-other-enclaves">Related zones in Other Enclaves</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="dmz-enclave-overview">DMZ Enclave Overview</h1>
+
+<p>The DMZ enclave includes the systems that provide services to systems and users outside ORNL, as well as the systems needed to support those externally-facing services.  Systems with inbound firewall exceptions must be in the DMZ, <a href="open-research-enclave">Open Research</a>, or <a href="supercomputing-enclave">Supercomputing</a>.</p>
+
+<p>Physical Locations: Only in IT managed server rooms with physical access control.</p>
+
+<p>Wireless: None</p>
+
+<h1 id="authentication-in-the-dmz">Authentication in the DMZ</h1>
+
+<p>Systems in the DMZ use DCAMS for account management, and all DCAMS accounts are considered privileged.  There are no systems in the DMZ where standard user interactive login is permitted (with the possible exception of DMZ.Tenant system).  Note that remote access systems are part of the Workstations enclave, both from an account management perspective and so that users in remote access systems have access to other ORNL systems as if they were in the Workstations enclave.  See, for example, <a href="system-examples#login-servers">Login Servers</a></p>
+
+<h2 id="windows">Windows</h2>
+
+<ul>
+  <li>Windows systems must be joined to the DMZ domain.  Previous DMZ versions allowed extranet joined systems in the DMZ, but Extranet joined systems must either be moved to the dmz domain or moved to the OR.Servers zone.</li>
+  <li>Windows systems in the DMZ should use Smart Card (Level 4) for interactive login (e.g. RDP).  Username/password is permitted for service accounts and for very rare cases where an administrator must log in using a service account.  Note that it may be possible to bind an administrator’s Smart Card to the service account, so that interactive login is done using the smart card, but the service account otherwise uses a username/password.  In many cases, Windows systems in the DMZ will be configured to support smart card authentication for interactive logins, but not require it.  In such cases, Level 4 authentication is enforced by a jump server.</li>
+  <li>Service accounts should be DCAMS-managed service accounts.  Service accounts may be machine-local, with appropriate system documentation.</li>
+  <li>Operating system interactive accounts should be limited to system and application administrators.</li>
+  <li>Remote Desktop Protocol (RDP) access from internal networks should be via a jump server.  If a system is configured to require smart card authentication, direct RDP access from other Enclaves can be approved as an unusual firewall exception, with clear justification.</li>
+  <li>Where information must cross from ORNL-internal enclaves (ornl.gov domain) into the DMZ, the preferred pattern is for the internal system (typically in the Servers enclave) to have a DCAMS credential that it uses to authenticate to the DMZ system and push from Servers into the DMZ.  Where that is not possible, the use of ornl.gov domain credentials in the DMZ must be documented through the Risk Acceptance process, and those credentials must be used for only that purpose.</li>
+</ul>
+
+<h2 id="unixlinux">UNIX/Linux</h2>
+<ul>
+  <li>Unix/Linux systems must use SecurID or other approved level 3 or level 4 for interactive ssh access, as well as for interactive use of sudo.</li>
+  <li>Password-based authentication should only be permitted at the console and only with passwords meeting the requirements for IT privileged accounts.</li>
+  <li>The preferred method of account control is a DCAMS agent.</li>
+  <li>Ssh access from internal networks must be via a jump (login) server.  If a system is configured for Level 4 authentication for all ssh access, direct ssh from WS.Moderate can be approved as an unusual firewall exception.  Note that at present, the only Level 4 authentication is via the PIV card.</li>
+  <li>Login as a uid 0 account must be attributable to a specific person using a DCAMS managed account.</li>
+  <li>Interactive login using ssh keys to non-privileged accounts is permissible, but only from IT-managed jump servers.</li>
+  <li>Machine-specific service accounts may be used.  Where a service account must be used for communication between systems, a DCAMS account is preferred.</li>
+  <li>No use cases have been proposed which require SAMBA in the DMZ.</li>
+</ul>
+
+<h2 id="other-systems">Other Systems</h2>
+<ul>
+  <li>Where systems cannot use SecurID or other approved MFA for authentication, LDAP-based authentication to DCAMS managed accounts in LDAPD is permitted.  However, interactive access to such systems must be through an IT-managed Level 4 jump server.</li>
+</ul>
+
+<h2 id="applications">Applications</h2>
+<ul>
+  <li>Applications hosted on servers in the DMZ should use SAML or OAuth for authentication where practical.  Direct use of LDAPX, smart card, and SecurID are allowed, but not preferred.</li>
+  <li>Applications may authenticate using XCAMS or UCAMS credentials, as appropriate, noting that External Services (Moderate) applications must use multifactor authentication.  Authentication using DCAMS is permitted, but only for cases where the application use is for privileged users only.  As an example, the Ping Federate console is an application hosted in the DMZ which is only accessed by administrators.  This console can (and should) use DCAMS managed credentials, with at least Level 3 MFA (Level 4 preferred).</li>
+</ul>
+
+<h1 id="dmz-zones">DMZ Zones</h1>
+
+<p>The arrows in the flow diagrams below have the following meanings:</p>
+
+<p><img src="graphics/netflow-arrow-key.png" alt="Network Flows Arrow Key" /></p>
+
+<h2 id="external-services-low">External Services (Low)</h2>
+
+<p>DMZ.ExtServicesLow provides Internet-facing services with Low Confidentiality data.  Services with public data may be non-authenticated, such as public facing web sites.  Services with non-sensitive data may authenticate using Level 1 credentials.  Services with Low Confidentiality sensitive data should authenticate with Level 2 or better credentials.</p>
+
+<p><img src="graphics/netflow-dmz-external-services-low.png" alt="External Services (Low) Network Flow Pattern" /></p>
+
+<h2 id="external-services-moderate">External Services (Moderate)</h2>
+
+<p>DMZ.ExtServicesMod provides Internet-facing services with data up to Moderate Confidentiality.  Where a service exposes both Low and Moderate Confidentiality data, the Low portion of the service may authenticate with Level 2 credentials.  Services exposing Moderate Confidentiality data must use Level 3 or better multifactor authentication.  The network flow patters for Moderate services is identical to that for Low.  The difference is that a higher level of scrutiny should be given for any unusual firewall exceptions involving Moderate and requests for inbound firewall exceptions into Moderate must document how MFA is enforced.</p>
+
+<p><img src="graphics/netflow-dmz-external-services-moderate.png" alt="External Services (Moderate) Network Flow Pattern" /></p>
+
+<h2 id="internal-services">Internal Services</h2>
+
+<p>DMZ.InternalServices can be used for three different types of systems: (1) those providing services to systems in the DMZ (such as DNS), (2) those retrieving information from the Internet to make that available to other ORNL systems (in the DMZ or other internal networks, such as software updates), and (3) components of Internet facing systems where those components should not have inbound firewall exceptions from the world (such as test/dev/QA versions of systems).</p>
+
+<p>Examples of systems appropriate to DMZ.InternalServices:</p>
+
+<ul>
+  <li>Client health servers (such as AV) and basic services, such as DNS and NTP.</li>
+  <li>Software update servers, particularly those serving the DMZ, but also those serving other internal networks.</li>
+  <li>Management consoles for Internet-facing software systems where that console is on a separate IP address</li>
+  <li>Dev/Test/QA portions of Internet-facing systems where those portions should not be Internet facing.  Note that some systems may need for QA to be Internet-facing, where the QA components of other systems should be internal access only. The system owner should decide whether the dev/test/QA components should be in an External Services zone (and potentially Internet facing or Internal Services.  Note that just because a system is in an External Services zone, that system is not automatically Internet accessible.  However, inbound exceptions from the Internet are Normal exceptions for External Services zones, whereas they are CISO exceptions for Internal Services.  Putting something in Internal Services, then, provides an extra level of procedural control to prevent inadvertently opening a system up to the Internet.</li>
+</ul>
+
+<p><img src="graphics/netflow-dmz-internal-services.png" alt="Internal Services Network Flow Pattern" /></p>
+
+<h2 id="data--relay">Data &amp; Relay</h2>
+
+<p>The Data &amp; Relay zone is intended for systems which need to exchange information with ORNL internal networks.  It is a higher risk environment than Internal Services, as Data &amp; Relay is permitted to reach back into ORNL internal networks.  However, Data &amp; Relay is not permitted to reach out to the Internet.</p>
+
+<p><img src="graphics/netflow-dmz-data-relay.png" alt="Data &amp; Relay Network Flow Pattern" /></p>
+
+<h2 id="proxy">Proxy</h2>
+
+<p>DMZ.Proxy is for systems which need to accept traffic from the Internet, perform some form of validation on that information, and pass that along to ORNL internal systems.</p>
+
+<p><img src="graphics/netflow-dmz-proxy.png" alt="Proxy Network Flow Pattern" /></p>
+
+<h2 id="tenant">Tenant</h2>
+
+<p>The Tenant Zone contains SubZones for systems that either need to be self-contained in one network segment or which benefit from not having component devices spread out over multiple Zones.  For example, the DMZ SharePoint implementation has systems that would otherwise be spread out across five different DMZ Zones.  Instead, all of the virtual machines that make up SharePoint can be put into DMZ.Tenant.SharePoint.  This also makes it easier to clone the entire subzone to make dev, test, QA, and prod environments.</p>
+
+<p>As another example, the Eagle-I system is one which has some specific controls and security plan implications and needs to be separated from other DMZ systems.  It may, for example, use credentials which are unique to this system, overriding the default policies for the DMZ.  The DMZ.Tenant.EagleI subzone can then be used both to collect the computers (physical or virtual) that make up this system, isolate those computers from the rest of the DMZ, and have a security plan (control set) that overrides only those controls needed to meet the Eagle-I requirements while inheriting all those which are appropriate to this particular system.</p>
+
+<p><img src="graphics/netflow-dmz-tenant.png" alt="Tenant Network Flow Pattern" /></p>
+
+<h2 id="dlan">DLAN</h2>
+
+<p>DLAN is exclusively for the dmz.ornl.gov Active Directory domain controllers and directly related systems.</p>
+
+<p><img src="graphics/netflow-dmz-dlan.png" alt="DLAN Network Flow Pattern" /></p>
+
+<h2 id="related-zones-in-other-enclaves">Related Zones in Other Enclaves</h2>
+
+</section>
+</body>
+
+</html>

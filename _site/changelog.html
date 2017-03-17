@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Change Log &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/changelog.html">Change Log</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<ul>
+  <li>
+    <p>2016-05-04: Draft of core CI Infrastructure enclave.  Minor tweaks to some other pages.  Stubbed out Workstation Enclave zones.</p>
+  </li>
+  <li>
+    <p>2016-04-13: Rename DMZ.ExternalProxy to DMZ.Proxy (external is redundant in the context of the DMZ).</p>
+  </li>
+  <li>
+    <p>2016-04-13: Dropped Border as an enclave.  The border router itself will be in the IT Core Infrastructure enclave.  The network segments currently hanging off the border firewall (ARM and IPv6Test can either be standalone Enclaves (if needed) or a Zone or SubZone in another enclave).</p>
+  </li>
+  <li>
+    <p>2016-04-13: Renamed Network Segment to Network Environment.</p>
+  </li>
+  <li>
+    <p>2014-04-07: Stubbed out for IT Core Infrastructure and Border enclaves, per discussion with Carly Logan.</p>
+  </li>
+  <li>
+    <p>2014-04-07: Stubbed out the definition for DMZ.Tenant in the <a href="netseg/dmz-enclave">DMZ Enclave</a> descriptions.</p>
+  </li>
+  <li>
+    <p>2016-04-07: Added definition of Network Segment to the <a href="netseg/home">NetSeg Home</a> page.  Also on that page changed Context to SubZone.  Some text in the Enclave, Zone, and SubZone segments were moved into the Network Segment section, as Enclaves, Zones, and SubZones are types of Network Segments.  Clarified that devices (particularly networking gear) may be registered in an Enclave (most devices, and all endpoints, will get registered in a Zone or a SubZone).</p>
+  </li>
+  <li>
+    <p>2016-04-06: Fixed bug in DMZ flow diagrams, where some of the internal flows were erroneously labeled as “Internet ports”. These should have said “non-shell Ports”.  In the DMZ flow diagrams, the Internet is always to the right, internal systems to the left, and other DMZ systems are down.  The key point is that there are differences in flows for ports where shell access is permitted (e.g. RDP, PowerShell, and ssh) and ports where shell access is typically not involved (e.g. https, http, database access, and other application access protocols).</p>
+  </li>
+  <li>
+    <p>2016-04-06: Renamed Workstations.Moderate to Workstations.MFA, renamed Workstatations.Low to Workstations.Level2, changed CIA level for Workstations.Level2 to {M,L,L}.  We needed to allow for systems (like Macs) that can’t directly MFA for interactive login but which may still hold moderate confidentiality information. Workstations.MEC and Workstations.MFA are perhaps too close in name, but I don’t have a better idea yet.  As part of this, clarified that Workstations.MFA is L3+ (enhanced L3).  Also renamed the two Citrix farms to MFA Citrix and Level2 Citrix.</p>
+  </li>
+  <li>
+    <p>2016-04-06: Changed L4/3 to L4 for servers.  There are effectively no L3 exceptions for privileged users, so server enclave interactive logins will leed to be L4.  This affects all zones in Servers and DMZ.  It also affects OR.Servers</p>
+  </li>
+  <li>
+    <p>2016-04-01: Supercomputing enclave is {M,M,L} (Low for availability).  Updated netseg diagrams and text to reflect this.</p>
+  </li>
+</ul>
+
+
+</section>
+</body>
+
+</html>
