@@ -1,0 +1,15 @@
+deploy-prod:
+  script:
+    - /usr/local/bin/bundle exec jekyll build -d /var/www/prod
+  tags:
+    - jekyll-prod
+  only:
+  - master
+
+deploy-dev:
+  script:
+    - /usr/local/bin/bundle exec jekyll build -d /var/www/dev
+  tags:
+    - jekyll-dev
+  only:
+  - dev
