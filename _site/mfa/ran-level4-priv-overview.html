@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Privileged Access to Unix/Linux Servers & Clusters in the Workstations Protection Zone &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/ran-level4-priv-overview.html">Privileged Access to Unix/Linux Servers & Clusters in the Workstations Protection Zone</a>
+  </h1>
+
+  <h2 id="overview">Overview</h2>
+<p>MultiFactor Authentication (MFA) Enforcement is part of our contract with DOE and must be enforced for privileged users on Linux servers in the Workstations (previously known as the Research Area Network) PZ by September 30, 2016. Users are considered privileged if they have root level access via sudo or a root level account. Users with a restricted set of privileges (e.g. the ability to run yum via sudo) are not considered privileged.</p>
+
+<p>Privileged users must have a secondary userid in UCAMS that is dedicated to administering servers in the Workstations PZ. These accounts will only be allowed to SSH in directly using a SmartCard or may use a password to authenticate if the login originates from a Workstations PZ level 4 jump server. Privileged users will be automatically granted full sudo rights on the server and any standard users that have full sudo rights or a root account must have those privileges removed and optionally create a privileged account. The ability to su to another user will be restricted to privileged users and the root account.</p>
+
+<p><br /></p>
+<h2 id="prerequisites">Prerequisites</h2>
+
+<h3 id="system-requirements">System Requirements</h3>
+<ul>
+  <li>[ ] Running an ORNL <a href="https://ornl.service-now.com/its/kb_view.do?sysparm_article=KB0100342">supported</a> Linux distribution as of October 1, 2016.
+    <ul>
+      <li>[ ] RHEL 5 and Ubuntu 12.04 will not support these changes.</li>
+    </ul>
+  </li>
+  <li>[ ] Registered as a server or cluster in <a href="https://netreg.ornl.gov">NetReg</a>.</li>
+  <li>[ ] Registered in the Workstations protection zone.</li>
+  <li>[ ] Systems using SecurID for ssh access are currently excluded.</li>
+  <li>[ ] Systems with a <strong>Smart Card Authentication Enforcement Policy - Linux Privileged Access</strong> exception through the <a href="http://home.ornl.gov/~dex/prod/">Device Exception System</a> are excluded.</li>
+</ul>
+
+<h3 id="user-requirements-for-privileged-access">User Requirements for Privileged Access</h3>
+<ul>
+  <li>[ ] <a href="https://portal02.ornl.gov/sites/BI/_layouts/ReportServer/RSViewerPage.aspx?rv:RelativeReportUrl=/sites/bi/dashboards/deviceswprivaccess.rdl">Review</a> systems where you have privileged access and remove any unneeded rights.</li>
+  <li>[ ] <a href="mfa/home">Configure</a> your SSH client to use SmartCard auth when connecting to the Workstations PZ jump server.</li>
+  <li>[ ] Request a secondary UCAMS userid to be dedicated for privileged access in Workstation (if you do not already have one).</li>
+  <li>[ ] Request the <strong>IT Privileged Access</strong> -&gt; <strong>Unix/Linux for RAN</strong> resource in <a href="https://ucams.ornl.gov">UCAMS</a> for your Workstations PZ account.
+    <ul>
+      <li>[ ] You may get multiple notifications to resend your password.</li>
+      <li>[ ] Recommendation is to change your password to 16+ characters after all resources have been approved.</li>
+      <li>[ ] You will be granted access to the Workstations PZ Linux jump server and the workstation password server resources as part of this request.</li>
+      <li>[ ] If you wish to use your Workstations PZ account with SecurID, you will need to manually request the mapping in UCAMS.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><br /></p>
+<h2 id="technical-enforcement">Technical Enforcement</h2>
+
+<h3 id="changes-being-made-to-the-system">Changes being made to the system</h3>
+<ul>
+  <li>A ranprivaccess group will be created and populated with local users that have the IT Privileged Access -&gt; Unix/Linux for RAN UCAMS resource.</li>
+  <li>The ranprivaccess group will be granted full sudo rights via an entry in /etc/sudoers.d/level4_ran_priv.</li>
+  <li>The PAM configuration for su will be modified to restrict su access to root and members of the ranprivaccess group.</li>
+  <li>The SSHD cofniguration file will be replaced with a centrally managed version.
+    <ul>
+      <li>root access will be restricted to originating from a Workstations PZ jump server or using a SSH keypair. See the section below for details.</li>
+      <li>members of the ranprivaccess will be required to use a SmartCard or connect from a Workstations PZ jump server.</li>
+      <li>standard users will be able to (but not required) to SSH in using a SmartCard.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="root-ssh-keys">Root SSH keys</h3>
+
+<p>SSH keys for the root user (/root/.ssh/authorized_keys) should only be configured if absolutely necessary (such as to facilitate large file syncing or administration of machines within a cluster). If feasible, restrictions should be put in place to limit access to originating from specific hosts by adding a from section to your key.</p>
+
+<p><strong>Example SSH key for root (/root/.ssh/authorized_keys)</strong></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>from="trusted-host.ornl.gov,160.91.11.2" ssh-rsa AAAAB35zaC1Zc2EAAAABIwAAAP8393iUQUGJLTTGRlaGwIT0/PK9n831LvuLBOjfzSTt6kfWYNcvLgOMN9nIpo1kUTrK2TKuYCSHCm0luLSu8jgTHRMKZqWwBUqY0chRhmU/7lIaomoTp311D9/J23vrFok/84yjt3kz/GESPDBVboXuZsq3ljizRAeHQIBcvAZO93J4zu3o7cCST204bITIMTlhxOfacJ1p6G2h5yxl5kPq1CPTRo0KhU1rLkVq4sRYfUBf81jg8W1I3jD1Om37kGJ0rQks+0dteFFgNW10++iGomyUmO1YPDQnBfuC/eGXftsj1PBbK4s6fb4jXOP7FI30LRfP9jIx9j3aD9EuDbE=
+</code></pre>
+</div>
+
+<p><br /></p>
+<h2 id="implementation-timeline">Implementation Timeline</h2>
+
+<h3 id="deadline-of-august-31-2016">Deadline of August 31, 2016</h3>
+<ul>
+  <li>[ ] Verify that you have a secondary account for privileged access in Workstations PZ.</li>
+  <li>[ ] Verify that you have the <strong>IT Privileged Access</strong> -&gt; <strong>Unix/Linux for RAN</strong> resource in UCAMS.</li>
+  <li>[ ] Review the privileged systems list and remove an unneeded access.</li>
+  <li>[ ] Request a DES exception for any ITSD owned systems that cannot enforce the new policy.</li>
+</ul>
+
+<h3 id="deadline-of-september-6-2016">Deadline of September 6, 2016</h3>
+<ul>
+  <li>[ ] Test your access to the Workstations PZ jump servers (ranlogin01 / ranlogin02).</li>
+</ul>
+
+<h3 id="deadline-of-september-7-2016">Deadline of September 7, 2016</h3>
+<ul>
+  <li>[ ] ITSD owned systems will enforce the new policy beginning on 9/7</li>
+  <li>[ ] Request a DES exception for any ORNL owned systems that cannot enforce the new policy.</li>
+</ul>
+
+<h3 id="deadline-of-september-14-2016">Deadline of September 14, 2016</h3>
+<ul>
+  <li>[ ] Send any issues or constructive criticism as a result of this change to Brian Zachary and Jim Trater.</li>
+</ul>
+
+<h3 id="deadline-of-september-21-2016">Deadline of September 21, 2016</h3>
+<ul>
+  <li>[ ] ORNL owned systems will enforce the new policy beginning on 9/21.</li>
+</ul>
+
+<h3 id="deadline-of-september-30-2016">Deadline of September 30, 2016</h3>
+<ul>
+  <li>[ ] Upgrade, retire or request a DES for any Linux systems running an unsupported (at ORNL) version of Linux.</li>
+</ul>
+
+
+</section>
+</body>
+
+</html>

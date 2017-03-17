@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      SSH Authentication with a SmartCard from Windows &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/mfa/ssh-client/win.html">SSH Authentication with a SmartCard from Windows</a>
+  </h1>
+
+  <h3 id="client-prerequisites">Client Prerequisites</h3>
+<ul>
+  <li>HSPD-12 or LSSO (site issued) SmartCard badge. <strong>The eToken cannot be used for SSH.</strong></li>
+  <li>You must know your PIN (this can be reset at the badging office).</li>
+  <li><a href="../smartcard-readers.html">Supported</a> SmartCard reader for your desktop/laptop.</li>
+  <li>Request access to the SSH jump servers and resend your password as needed before using them. See <a href="../home.html">this</a> page for the server list.</li>
+</ul>
+
+<h2><br /></h2>
+<h3 id="securecrt">SecureCRT</h3>
+<ol>
+  <li>Install SecureCRT version 8.0 or newer.
+    <ul>
+      <li>This is paid commercial software. A 30 day trial can be downloaded from <a href="https://www.vandyke.com/download/securecrt/download.html">here</a>.</li>
+      <li>ITSD staff can request a licensed copy by sending an e-mail to <a href="mailto:Spuds-Support@ornl.gov">Spuds-Support@ornl.gov</a>.</li>
+      <li>Non-ITSD staff can order a licensed copy from <a href="https://market.ornl.net/ORNL/login/ornl_html/purch/purch.html">Marketplace</a>.</li>
+    </ul>
+  </li>
+  <li>Insert your SmartCard.</li>
+  <li>Launch SecureCRT.</li>
+  <li>File -&gt; Quick Connect (the dialog may be open by default)
+    <ul>
+      <li>Hostname: jump-server-name.ornl.gov (e.g. opslogin01.ornl.gov)</li>
+      <li>Username: your-username</li>
+      <li>Authentication:
+        <ul>
+          <li>[ ] Password</li>
+          <li>[X] PublicKey</li>
+          <li>[ ] Keyboard Interactive</li>
+          <li>[ ] GSSAPI<br />
+<img src="..//images/ssh-client-win-quickcon.png" alt="Quick Connect dialog" /></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Click Authentication -&gt; PublicKey -&gt; Properties
+    <ul>
+      <li>Use session public key setting</li>
+      <li>Use a certificate from your personal CAPI store
+<img src="../images/ssh-client-win-pubkey.png" alt="PublicKey dialog" /></li>
+    </ul>
+  </li>
+  <li>Click the selection icon next to <strong>Certificate to use:</strong>
+    <ul>
+      <li>HSPD-12 badge: The certificate should be named: Firstname Lastname (Affiliate)</li>
+      <li>LSSO badge: The certificate should be named: Lastname, Firstname (username)</li>
+      <li>Highlight each non-expired certificate (one at a time and starting from the top) and click <strong>Properties</strong>
+        <ul>
+          <li>Click the <strong>Details</strong> tab</li>
+          <li>Click the <strong>Subject Alternative Name</strong> field
+            <ul>
+              <li>HSPD-12 badge: The correct certificate will have a principal name of number@FEDIDCARD.GOV</li>
+              <li>LSSO badge: The correct LSSO certificate will have a principal name of ucams-username@ornl.gov
+ <img src="../images/ssh-client-win-certprops.png" alt="Certificate properties" /></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>When you have found the correct certificate, ensure that it is highlighted and click <strong>OK</strong>.</li>
+    </ul>
+  </li>
+  <li>Click <strong>OK</strong> to close the Public Key Properties.</li>
+  <li>Click <strong>Connect</strong>.</li>
+  <li>Enter your PIN when prompted.<br />
+<img src="../images/ssh-client-win-pin.png" alt="Certificate properties" /></li>
+</ol>
+
+<h2 id="-1"><br /></h2>
+<h3 id="putty-cac">PuTTY-CAC</h3>
+<ol>
+  <li>Download putty.exe from <a href="https://risacher.org/putty-cac/">here</a></li>
+  <li>In the connection seeings, click SSH-&gt; CAPI
+    <ul>
+      <li>Check: Attempt CAPI certificate</li>
+      <li>Click Cert -&gt; Browse and select your certificate
+        <ul>
+          <li>HSPD-12 badge: The certificate should be named: Firstname Lastname (Affiliate)</li>
+          <li>LSSO badge: The certificate should be named: Lastname, Firstname (username)</li>
+          <li>Highlight each non-expired certificate (one at a time and starting from the top) and click <strong>Properties</strong>
+            <ul>
+              <li>Click the <strong>Details</strong> tab</li>
+              <li>Click the <strong>Subject Alternative Name</strong> field
+                <ul>
+                  <li>HSPD-12 badge: The correct certificate will have a principal name of number@FEDIDCARD.GOV</li>
+                  <li>LSSO badge: The correct LSSO certificate will have a principal name of ucams-username@ornl.gov</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>When you have found the correct certificate, ensure that it is highlighted and click <strong>OK</strong>.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Enter a remote server name and save your session.</li>
+  <li>Click Open to connect.</li>
+  <li>Enter your SmartCard pin when prompted.</li>
+</ol>
+
+
+</section>
+</body>
+
+</html>

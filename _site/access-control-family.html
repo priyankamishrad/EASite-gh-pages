@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Access Control (AC) &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/access-control-family.html">Access Control (AC)</a>
+  </h1>
+
+  <h1 id="draft-for-comment"><strong><em>DRAFT FOR COMMENT</em></strong></h1>
+
+<hr />
+
+<p>Within this document, interactive login refers to a user who is able to interact directly with the operating system, typically through directly logging into the system (such as on a laptop or desktop computer or a server console) or through an OS-level remote access protocol such as Remote Desktop Protocol (RDP) or secure shell (ssh).  Application access refers to a user who is interacting with a program or abstraction layer above the operating system, generally through a web browser.</p>
+
+<h2 id="ac-01-access-control-policies-and-procedures">AC-01 Access Control Policies and Procedures</h2>
+
+<h3 id="ac-01low">AC-01.Low</h3>
+
+<p>The ORNL Computer Security Program Plan (CSPP) and this Common Control document establish the policies associated with Access Control.  These documents are reviewed as part of the continuous monitoring program and updated as needed.</p>
+
+<h3 id="ac-01moderate">AC-01.Moderate</h3>
+
+<p>No additional requirements for moderate systems</p>
+
+<h2 id="ac-02-account-management">AC-02: Account Management</h2>
+
+<h3 id="ac-02a-types-of-information-system-accounts">AC-02.a Types of information system accounts</h3>
+
+<p>ORNL has four Credential and Access Management Systems (CAMS): XCAMS, UCAMS, DCAMS, and SNOCAMS. Except as noted below, XCAMS is classified as a Level 1 authentication system.  UCAMS, DCAMS, and SNOCAMS when used with passwords are classified as Level 2 authentication systems.  UCAMS, DCAMS, and SNOCAMS when used with multifactor authentication (SecurID or smart card) are classified as a Level 3+ (enhanced Level 3) authentication system.  Witin all of these CAMS, accounts are not shared between people (except where documented in an exception).</p>
+
+<p>Within XCAMS, any internet user may establish one or more XCAMS primary accounts, which are used for standard user access to low controls systems.  ORNL staff may establish one or more XCAMS secondary accounts, which may be used for service accounts and privileged user access to low contols systems.  Because of the higher level of identity proofing, an XCAMS secondary account is considered a Level 2 credential.</p>
+
+<p>XCAMS permits a user to bind supported external Level 1 or greater credentials to an XCAMS primary account, allowing that external credential to replace the XCAMS password as the credential validator for an authentication transaction. Examples of this include binding a Google account to an XCAMS primary account, letting the user authenticate via the OAuth or SAML protocols with that Google account to assert the XCAMS primary account identity.  External account binding is not permitted for XCAMS secondary accounts.</p>
+
+<p>Within UCAMS, primary accounts are ones used for standard user access to typcial work systems.  A given person has a single primary account.  UCAMS secondary accounts are used for service accounts, privileged user access to systems, some forms of testing, and other cases where using a primary account is problematic or insecure.  UCAMS primary accounts are (by default) replicated to XCAMS, allowing this Level 2 credential to be used in environments where a Level 1 credential is permitted.</p>
+
+<h3 id="ac-02b-account-managers">AC-02.b Account Managers</h3>
+
+<p>Each CAMS has a defined set of ORNL staff who manage that system and approve changes to the system.</p>
+
+<h3 id="ac-02c-conditions-for-group-and-role-memberships">AC-02.c Conditions for group and role memberships</h3>
+
+<h3 id="ac-02d-specifies-authorized-users-for-the-information-system">AC-02.d Specifies authorized users for the information system</h3>
+
+<h3 id="ac-02e-requires-approvals-to-create-accounts">AC-02.e Requires approvals to create accounts</h3>
+
+<h3 id="ac-02f-creates-enables-modifies-and-removes-accounts-with-procedrues">AC-02.f Creates, enables, modifies, and removes accounts with procedrues</h3>
+
+<h3 id="ac-02g-monitors-user-of-information-system-accounts">AC-02.g Monitors user of information system accounts</h3>
+
+<h3 id="ac-02h-notifies-account-managers">AC-02.h Notifies account managers</h3>
+
+<h3 id="ac-02i-authorizes-access-to-the-information-system">AC-02.i Authorizes access to the information system</h3>
+
+<h3 id="ac-02j-reviews-accountsfor-compliance">AC-02.j Reviews accountsfor compliance</h3>
+
+<h3 id="ac-02k-establishes-a-process-for-reissuing-sharedgroup-accounts-when-individuals-are-removed-from-the-group">AC-02.k Establishes a process for reissuing shared/group accounts when individuals are removed from the group</h3>
+
+<h3 id="ac-02low">AC-02.Low</h3>
+
+<p>Read access to information classified as Low Confidentiality requires a Level 1 or greater credential.</p>
+
+<p>Write access to information classifed as Low Integrity requires a Level 1 or greater credential.</p>
+
+<p>Standard user interactive login to a system classified as Low Availability requires a Level 1 or greater credential.  Privileged user interactive login to such systems requires a Level 2 or greater credential.</p>
+
+<h4 id="ac-02lowopenresearch">AC-02.Low.OpenResearch</h4>
+
+<p>The Open Research enclave uses the XCAMS account management system and the associated extranet.ornl.gov Active Directory for all accounts.</p>
+
+<h5 id="ac-02lowopenresearch-1">AC-02.Low.OpenResearch.</h5>
+
+<h4 id="ac-02lowind">AC-02.Low.IND</h4>
+
+<h3 id="ac-02moderate">AC-02.Moderate</h3>
+
+<p>Read access to information classified as Moderate Confidentiality requires a Level 2 or greater credential.</p>
+
+<p>Write access to information classfied as Moderate Integrity requires a Level 2 or greater credential.</p>
+
+<p>Standard user interactive login to a system classified as Moderate Availability requires a Level 2 or greater credential.  Privileged user interactive login to such systems requires a Level 3+ or greater credential.</p>
+
+<h4 id="ac-02moderatedmz">AC-02.Moderate.DMZ</h4>
+
+<h4 id="ac-02moderateservers">AC-02.Moderate.Servers</h4>
+
+<h4 id="ac-02moderateworkstations">AC-02.Moderate.Workstations</h4>
+
+<h4 id="ac-02moderateics">AC-02.Moderate.ICS</h4>
+
+<h4 id="ac-02moderateenh-1">AC-02.Moderate.Enh-1</h4>
+
+<h4 id="ac-02moderateenh-2">AC-02.Moderate.Enh-2</h4>
+
+<h4 id="ac-02moderateenh-3">AC-02.Moderate.Enh-3</h4>
+
+<h4 id="ac-02moderateenh-4">AC-02.Moderate.Enh-4</h4>
+
+</section>
+</body>
+
+</html>

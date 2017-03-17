@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Firewall Rule Classification &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/firewall-rule-classification.html">Firewall Rule Classification</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<p><strong><em>DRAFT</em></strong></p>
+
+<hr />
+
+<h1 id="table-of-contents">Table of Contents</h1>
+
+<ul>
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#rule-classification-lists">Rule Classification Lists</a></li>
+  <li><a href="#dmz-enclave">DMZ Enclave</a>
+    <ul>
+      <li><a href="#dmzextserviceslow">DMZ.ExtServicesLow</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="overview">Overview</h1>
+
+<p>As noted in <a href="netseg/home#firewall-exception-types">Network Segmentation Key Concepts</a>, there are three types of firewall exceptions: Normal, Unusual, and CISO.  Each network environment defines the types of firewall exceptions which fall into each of these categories.  The various enclave documentation provides a graphical overview of the different rule types.  This document provides additional supporting detail.</p>
+
+<h1 id="rule-classification-lists">Rule Classification Lists</h1>
+
+<p>To determine the firewall exception type, you need to know the source (client) and destination (server) network environments and the protocol.  Where the one environment is outside ORNL’s accreditation boundary (i.e. someplace on the Internet), the rules for the other environment apply.  Where both environments are within ORNL’s accrediation boundary, then the rules for both source and destination need to be evaluated.  For an example, for an exception permitting traffic from the World (source) to DMZ.ExtServicesLow, only the rules for DMZ.ExtServicesLow need to be evaluated. But for an exception from DMZ.Data/Relay to Workstations.Level2, the rules for both Zones need to be considered.</p>
+
+<p>A Zone inherits all rules from its parent Enclave, and a SubZone inherits all rules from its parent Zone.</p>
+
+<p>Where multiple rules apply to a proposed firewall exception, the most restrictive rule wins.</p>
+
+<p>In the tables below “World” as a network environment matches all network environments, whether inside ORNL’s accrediation boundary.  For example, with DMZ.ExtServicesLow, inbound firewall exceptions from anywhere are considered Normal.  However, the rules for the DMZ enclave indicate that interactive login protocols (rdp, ssh, and powershell) are considered CISO exceptions when coming from the Internet</p>
+
+<h1 id="dmz-enclave">DMZ Enclave</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Destination</th>
+      <th>Protocol</th>
+      <th>Exception Type</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Internet</td>
+      <td>DMZ.*</td>
+      <td>rdp,ssh,powershell</td>
+      <td>CISO</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>DMZ.*</td>
+      <td>Internet</td>
+      <td>rdp,ssh,powershell</td>
+      <td>CISO</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Other Enclaves</td>
+      <td>DMZ.*</td>
+      <td>rdp,ssh,powershell</td>
+      <td>Unusual</td>
+      <td>Validate that destination server enforces L4 authentication</td>
+    </tr>
+    <tr>
+      <td>Internet</td>
+      <td>DMZ.*</td>
+      <td>netbios, smb</td>
+      <td>CISO</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Other Enclaves</td>
+      <td>DMZ.*</td>
+      <td>netbios, smb</td>
+      <td>Unusual</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="dmzextserviceslow">DMZ.ExtServicesLow</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Source</th>
+      <th>Destination</th>
+      <th>Protocol</th>
+      <th>Exception Type</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>World</td>
+      <td>DMZ.ExtServicesLow</td>
+      <td>any</td>
+      <td>Normal</td>
+      <td>Ensure that logs from the service are going to Splunk (e.g. web server logs for http and https).</td>
+    </tr>
+    <tr>
+      <td>DMZ.ExtServicesLow</td>
+      <td>Internet</td>
+      <td>any</td>
+      <td>Unusual</td>
+      <td>Define reason server needs to reach out and what kind of data it is sending/receiving.</td>
+    </tr>
+  </tbody>
+</table>
+
+</section>
+</body>
+
+</html>

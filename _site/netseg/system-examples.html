@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Network Segmentation System Examples &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/system-examples.html">Network Segmentation System Examples</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<p><strong>Summary</strong>: This document provides examples (or links to examples) of how systems are constructed based on the credential and network segmentation being put into place at ORNL.</p>
+
+<h1 id="topics">Topics</h1>
+
+<ul>
+  <li><a href="#dmz-examples">DMZ Examples</a>
+    <ul>
+      <li><a href="#dmz-splunk-forwarder">DMZ Splunk Forwarder</a></li>
+      <li><a href="#ironports">Ironports</a></li>
+    </ul>
+  </li>
+  <li><a href="#other-remote-access">Other Remote Access</a>
+    <ul>
+      <li><a href="#login-servers">Login Servers</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="dmz-examples">DMZ Examples</h1>
+
+<h2 id="dmz-splunk-forwarder">DMZ Splunk Forwarder</h2>
+
+<p>The DMZ Splunk forwarder needs to be reachable from every other DMZ zone and it needs to be able to push information to the internal splunk systems (in the Servers enclave).  This means that the Splunk forwarder needs to be able to initiate traffic from the DMZ to ORNL internal.  It does not neet Internet access.</p>
+
+<p>This follows the pattern for the <a href="dmz-enclave#data-relay">Data &amp; Relay</a> enclave</p>
+
+<h2 id="ironports">Ironports</h2>
+
+<p>The Ironports send and receive traffic from the Internet (world) for inbound and outbound email. They also need to receive traffic from the Servers (Ops) enclave for outbound email.  Under normal circumstances mail inbound to ORNL goes from the Ironports to FireEye and then DEX, and from those systems to internal email server.  The inbound exception from the Ironports to internal email servers is allowed, in case it becomes necessary.  The Ironports do not need to talk to other DMZ systems apart from those that are needed for authentication, client health, and basic network services.  For example, the Ironports need to talk to the LDAPD system for account authentication, splunk/syslog forwarders, DNS, and NTP.</p>
+
+<p>This follows the pattern for the <a href="dmz-enclaves#external-proxy">External Proxy</a>.</p>
+
+<h1 id="other-remote-access">Other Remote Access</h1>
+
+<h2 id="login-servers">Login Servers</h2>
+
+<p>The login servers are Internet-facing bastion hosts used to provide ssh access to ORNL-internal systems.  Many would expect to find thes systems in something like DMZ.ExternalServicesModerate, but the correct location is actually Workstations.Moderate (currently, they are in RAN).</p>
+
+<p>The intent of the login servers is ORNL staff log in using UCAMS-managed credentials (with SecurID as the authenticator).  Once logged in, the intent is that users have access to ORNL systems as if they were on a (Linux) workstation physically located on site.  Given that the user has authenticated with MFA, access to Moderate confidentiality information is permitted.</p>
+
+<p>There are two basic design patterns to use to meet this requirement:</p>
+
+<ol>
+  <li>
+    <p>Put the system in the DMZ.  This violates the principles a) that there are no systems in the DMZ where standard users log in interactively and b) that DMZ systems use DCAMS for authentication.  If the system has a single network interface, then there have to be special firewall exceptions to allow access from the DMZ to the Servers.* systems to which workstations have access.  If the system has multiple network interfaces, then we have a bridge between enclaves that presents some special challenges from a logging and management perspective.</p>
+  </li>
+  <li>
+    <p>Put the system in the Workstations enclave.  This violates the principle that there aren’t systems in Workstations that have direct inbound firewall exceptions. However, that is addressed via a risk acceptance process, which documents the special precautions that are taken with the login servers to mitigate the risks of a system in Workstations (RAN) with a direct inbound firewall exception from the world.  No special management is needed</p>
+  </li>
+</ol>
+
+
+</section>
+</body>
+
+</html>

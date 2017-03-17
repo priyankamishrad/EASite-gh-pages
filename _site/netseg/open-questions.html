@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Open Questions for Network and Credential Segmentation &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/open-questions.html">Open Questions for Network and Credential Segmentation</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<p><strong>Summary</strong>: This page describes issues and questions that have not yet been resolved in the design for the network and credential segmentation. Issues that have been addressed can be found on the <a href="questions-and-answers">Questions and Answers</a> and <a href="system-examples">System Examples</a> pages.</p>
+
+<h1 id="topics">Topics</h1>
+<ul>
+  <li>
+    <p>&amp;&amp;&amp;&amp;&amp; Table of contents to be generated</p>
+  </li>
+  <li>
+    <p>How is dev.ornl.gov handled, particularly since there’s one AD per zone?</p>
+  </li>
+  <li>
+    <p>How should FUSEnet be handled?  This is an example of a moderate collaboration where external parties need OS level access to a set of virtual machines.  What zone does this belong in, since it is a) moderate confidentiality, b) externally accessable, and c) has users who are not ORNL staff.  And giving UCAMS accounts to all of those collaborators is not acceptable.</p>
+  </li>
+  <li>
+    <p>How should AWS authentication be handled, particularly in the context of CADES?  Is this a priviledged userID, and so should use DCAMS?  For the moderate-term future (years), some users will need to log into the AWS console in order to be able make settings changes that are not managed by cloudforms or other user-facing tools.</p>
+  </li>
+  <li>
+    <p>How should Moderate CADES overall be handled?  Again, users will include external collaborators who will need OS authentication.</p>
+  </li>
+  <li>
+    <p>Clearly document the differences between DMZ.ExtServicesLow vs Mod.  What are the access patterns for data in the Data &amp; Relay, since there is only one of those (accreditied for Moderate).</p>
+  </li>
+  <li>
+    <p>Clearly document the differences between External Proxy, Data &amp; Relay, and Internal Services for the DMZ.</p>
+  </li>
+  <li>
+    <p>Clarify diagram to distinguish between app authentication vs OS authentication.</p>
+  </li>
+  <li>
+    <p>From the perspective of a host-based firewall for Windows 10 policy, is there a network range that can be used to identify the systems that need to reach back to an internal Windows workstation. For example, would it be possible to restrict inbound connections to Servers.Monitoring?  Note that this will break RDP back to workstations from (for example) conference room PCs and ORNLAccess.</p>
+  </li>
+</ul>
+
+<p>Clarify how the credentials get segmented within the databases.  Example of this is the proposed new SharePoint POC.</p>
+
+<p>Who are the owners for the enclaves and for the zones.</p>
+
+<p>IP Address range (how many devices)
+Where DNS
+?DHCP
+How remediation handled
+Active Directory Domain
+Compliance services sources
+Where physically located</p>
+
+<p>Authentication
+Owner</p>
+
+<p>Servers.MEC
+Servers.DOE</p>
+
+<p>MEC requires an additional firewall.  How is this handled for workstations.MEC (if this exists)?</p>
+
+<p>Mark Diodati – Gartner Analyst for Linux MFA.</p>
+
+<p>Few orgs using Linux with Smart cards.  Elbow grease to get it to work.  Typically with common system.  Some Orgs use AD bridging products (centrify or beyond trust).  Use AD and fixes Kerberos to make it compatible with Windows.  Can lose SSO with some of the Kerberos implementations.</p>
+
+<p>Rarely see public/private key across bastion host.  Use Kerb for SSH.  AD protocols are often UDP and multiple ports.  No data that this is working from a private cloud infrastructure.  OTP dropping, migration to mobile push.  Recommendation of Duo.</p>
+
+<ul>
+  <li>
+    <p>Per Vicki Wheeler and Eddie Bishop: Concept of a sandbox enclave:  “Could be used for special projects, development, prototyping, etc. Then once the project is determined to be viable and you know where it goes, it is another instance of an existing enclave.  But you could have multiple sandboxes as well. Just establish a sandbox enclave.”</p>
+  </li>
+  <li>
+    <p>Separate enclaves for HDSI and CJIS – both are enhanced controls over a moderate baseline.</p>
+  </li>
+</ul>
+
+<p>What OU will a server get dropped into based on Server Enclave?  Same for DMZ?  How do the OU’s map to the zones?  Who has permissions to put things into those OUs.  This is a barrier for buildouts.</p>
+
+<p>Document the remediation zones and processes</p>
+
+<p>Who sets up the groups for server administration in the new enclave structure and how are those managed?</p>
+
+<p>credentials (ssh keys) for Tenable and Mid Servers are currently the same for all zones.  How do we want to address this?</p>
+
+<p>Need to handle both the zones and authentication for endpoint virtual machines.</p>
+
+<p>How do we handle the CADES VM self service admins?  We will have end-users who will be able to self-administer virtual machines inside of CADES.  How will they authenticate and how do we cover Level 4 for these users?</p>
+
+</section>
+</body>
+
+</html>

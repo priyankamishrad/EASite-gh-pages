@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta charset="utf-8">
+  <title>
+    
+      Current Network Zones and Migration Plan &ndash;
+    
+    
+  </title>
+
+  <link rel="alternate" type="application/rss+xml" href="/atom.xml" />
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://localhost:4000/css/base.css" type="text/css" media="screen, projection" />
+  <link rel="stylesheet" href="http://localhost:4000/css/pygments.css" type="text/css" />
+  <link media="only screen and (max-device-width: 480px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link media="only screen and (device-width: 768px)" href="/css/mobile.css" type="text/css" rel="stylesheet" />
+  <link href='//fonts.googleapis.com/css?family=Yanone+Kaffeesatz' rel='stylesheet' type='text/css'>
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <script type="text/javascript" src="/js/application.js"></script>
+</head>
+
+<body>
+  <section class="sidebar">
+  <a href="/" aria-label="Avatar">
+    <img src="images/ornl-stacked-green.jpg" height="120" width="180" class="avatar" />
+  </a>
+  
+  <p>The reference site for ITSD Enterprise Architechture documentation.</p>
+
+  <section class="sections">
+    <ul>
+      <li><a href="mfa/home.html">Multi Factor Authentication</a></li>
+      <li><a href="netseg/home.html">Network Segmentation</a></li>
+      <li><a href="changelog.html">Change Log</a></li>
+    </ul>
+  </section>
+</section>
+
+  <section class="content">
+  <h1>
+    <a href="/netseg/current-network.html">Current Network Zones and Migration Plan</a>
+  </h1>
+
+  <p><strong><em>ORNL Internal Use Only</em></strong></p>
+
+<hr />
+
+<p><strong>Summary</strong>: This document describes the current network enclaves and zones, as well as how these will get mapped into the new environment.  This is a working copy and should be reconciled against the cybersecurity program plan and information in NetReg.</p>
+
+<p>Supercomputing
+RAN
+Ops
+Open Research
+DMZ</p>
+
+<h1 id="operations-ops">Operations (OPS)</h1>
+<p>The OPS enclave contains those systems (servers, workstations, printers, etc.) that provide business support for the ORNL research mission. These systems are generally funded by the SBMS management systems or within the support organizations of ORNL.</p>
+
+<h2 id="klan-sub-protection-zone">KLAN (sub protection zone)</h2>
+<p>The only systems allowed in the KLAN are ORNL.GOV domain controllers, administrative workstations and patching system.</p>
+
+<h2 id="infra-dev-sub-protection-zone">Infra-Dev (sub protection zone)</h2>
+<p>The infra-dev sub-enclave was created to separate our development active directory domain and its associated systems from our production system.</p>
+
+<h2 id="srv-mgmt-sub-protection-zone">SRV-MGMT (sub protection zone)</h2>
+<p>The SRV-MGMT zone has been setup for lights out monitoring of servers in DMZ, Operations (OPS) and Research Area Network (RAN).</p>
+
+<h2 id="opsinfra-sub-protection-zone">OPS.INFRA (sub protection zone)</h2>
+<p>The OPS.INFRA sub enclave contains those systems that are managed by IT and provide services to a wide range of RAN devices. Examples of systems that will reside in this sub-enclave include systems that will provide the following services: DNS, Patching, Configuration Mangement, SAP, Email, Web, SharePoint.</p>
+
+<h2 id="moderate-with-enhanced-controls-mec-sub-protection-zone">Moderate with Enhanced Controls (M/EC) (sub protection zone)</h2>
+<p>The Moderate with Enhanced Controls (M/EC) PZ contains those systems which process moderate information that ORNL has determined require additional (enhanced) controls to protect the information, including, UCNI, C/FGI-Mod, and NNPI.</p>
+
+<h2 id="doe-site-office-sub-protection-zone">DOE Site Office (sub protection zone)</h2>
+<p>The DOE PZ contains DOE owned devices only.</p>
+
+<h2 id="opsservers-sub-protection-zone">OPS.SERVERS (sub protection zone)</h2>
+<p>The OPS.SERVERS enclave contains systems that support operations but do not fit into the OPS.INFRA sub-enclave. This may be because the system is not managed by IT or because is supports only a portion of the ORNL community such as a division or directorate server. Systems may be placed in this sub-enclave because it is desired that the services they offer be separated from the OPS.INFRA sub-enclave.</p>
+
+<h1 id="research-area-network-ran">Research Area Network (RAN)</h1>
+<p>The RAN protection zone contains systems used to conduct research. This includes most of the general purpose desktop systems, servers, instruments, printers, etc. that are used to perform and document open research within ORNL, and systems used by researchers to conduct proprietary or closed research. The overall RAN system will operate at the Moderate level, which includes all categories of unclassified sensitive information (from Guide to Handling Sensitive Information Exhibit in SBMS) and DOES include ORNL email.</p>
+
+<h2 id="arm_csat-sub-protection-zone">ARM_CSAT (sub protection zone)</h2>
+<p>The ARM_CSAT sub-enclave contains devices for ARM and CSAT</p>
+
+<h2 id="controlled-research-sub-protection-zone">Controlled Research (sub protection zone)</h2>
+<p>The Controlled Research protection zone is a Research PZ which contains those systems used by researchers to create, store and process proprietary, export controlled, protected CRADA, applied technology or similar information.</p>
+
+<h2 id="ranics-sub-protection-zone">RAN.ICS (sub protection zone)</h2>
+<p>The RAN.ICS sub-enclave is for the Industrial Controls Systems network and contains the ICS assets within ORNL that exist in industries such as electrical, water, oil and gas.</p>
+
+<h2 id="raninfra-sub-protection-zone">RAN.INFRA (sub protection zone)</h2>
+<p>The RAN.INFRA sub enclave contains those systems that are managed by IT and provide services to a wide range of RAN devices. Examples of systems that will reside in this sub-enclave include systems that will provide the following services:</p>
+
+<p>DNS
+Patching
+Configuration Management
+All services in RAN.INFRA will be a duplication of a service in OPS.INFRA. OPS.INFRA services will be duplicated to RAN.INFRA if the service is deemed necessary for RAN to function independent from OPS.
+RAN.SERVERS (sub protection zone)
+The RAN.SERVERS sub-enclave will be a general location for systems that provide support to ORNL.s research mission. These servers do not need to be managed by IT and may be managed by individual research projects.</p>
+
+<h1 id="supercomputing-nccs">Supercomputing (NCCS)</h1>
+<p>The supercomputing (NCCS) protection zone includes those systems that comprise the National Center for Computational Sciences.</p>
+
+<h1 id="dmz">DMZ</h1>
+<p>The DMZ protection zone includes those systems containing web and ftp servers hosting public information that is accessible via anonymous access for any person or system on the Internet.</p>
+
+<h2 id="v6test-sub-protection-zone">V6Test (sub protection zone)</h2>
+<p>The V6Test sub-enclave contains devices that are used in the testing and development of ORNL’s IPv6 infrastructure.</p>
+
+<h2 id="anlfed-sub-protection-zone">ANLFED (sub protection zone)</h2>
+<p>The ANLFED system contains a backup system for the Argonne National Laboratory Cyber alert Federation system.</p>
+
+<h2 id="dmzwww-sub-protection-zone">DMZ.WWW (sub protection zone)</h2>
+<p>The DMZ.WWW sub-enclave contains servers and infrastructure used for WWW.ORNL.GOV and its associated web sites. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzextservices-sub-protection-zone">DMZ.ExtServices (sub protection zone)</h2>
+<p>The DMZ.ExtServices sub-enclave contains servers whose services need to be accessible from the internet and also need to be accessible from all of Open Research and DMZ. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzinternalservices-sub-protection-zone">DMZ.InternalServices (sub protection zone)</h2>
+<p>The DMZ.InternalServices sub-enclave contains servers whose services need to be accessible only from Open Research or DMZ.</p>
+
+<h2 id="dmzextdns-sub-protection-zone">DMZ.ExtDNS (sub protection zone)</h2>
+<p>The DMZ.ExtDNS sub-enclave contains servers that provide ORNL’s External DNS capability. Externally facing devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzccp-sub-protection-zone">DMZ.CCP (sub protection zone)</h2>
+<p>The DMZ.CCP sub-enclave has been setup to allow for segmentation of ORNL machines and systems that process credit card transactions. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzlom-sub-protection-zone">DMZ.LOM (sub protection zone)</h2>
+<p>The DMZ.LOM sub-enclave has been setup for lights out monitoring of servers in the DMZ.* sub PZs.</p>
+
+<h2 id="dmzweb-sub-protection-zone">DMZ.WEB (sub protection zone)</h2>
+<p>The DMZ.WEB sub-enclave contain servers that provide web services to the internet but are not part of any other DMZ.* zone. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzsap-sub-protection-zone">DMZ.SAP (sub protection zone)</h2>
+<p>The DMZ.SAP sub-enclave contains systems that provide SAP connections from the internet and also reach back into the OPS.SAP enclave. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzsharepoint-sub-protection-zone">DMZ.SharePoint (sub protection zone)</h2>
+<p>The DMZ.SharePoint sub-enclave contains the servers that provide web connectivity from the internet to our external SharePoint farm. Devices in this sub-enclave should be IPv6 enabled.</p>
+
+<h2 id="dmzdlan-sub-protection-zone">DMZ.DLAN (sub protection zone)</h2>
+<p>The DMZ.DLAN sub-enclave contains those devices that serve as Windows Active Directory domain controllers for the DMZ Active Directory forests and the management stations used to manage the Active Directory forest. Access to this enclave will be strictly controlled. Accounts used to manage devices in this enclave must use smartcard authentication.</p>
+
+<h2 id="ext-ornl-sub-protection-zone">EXT-ORNL (sub protection zone)</h2>
+<p>The EXT-ORNL sub-enclave contains devices that reside in front of ORNL’s border firewall and are used to manage and monitor ORNL’s border network.</p>
+
+<h2 id="visitor-sub-protection-zone">Visitor (sub protection zone)</h2>
+<p>The Visitor sub-enclave is for use by systems of ORNL visitors.</p>
+
+<h2 id="xlan-sub-protection-zone">XLAN (sub protection zone)</h2>
+<p>The only systems allowed in the XLAN are Extranet.ORNL.GOV domain controllers, administrative workstations and patching system.</p>
+
+<h1 id="open-research">Open Research</h1>
+<p>The Open Research protection zone includes those systems used to conduct open research that creates, stores, and processes fundamental research information. Open research is defined as fundamental research that is openly shared with a broad community, does not include applied or export controlled research, and does not collect or process any sensitive information (as defined by Sensitive Information Categories in SBMS). This protection zone may contain desktops and servers used by staff and collaborators. Note: Desktops in this PZ can not be used to access sensitive information including email. Desktops used to read email, record timekeeping in PALS, access SAP resources, or access other sensitive information must remain in the Research Area Network (RAN) PZ. Systems in the RAN PZ can be used to access resources in the Open Research PZ.</p>
+
+<h2 id="csiir_v6-sub-protection-zone">CSIIR_V6 (sub protection zone)</h2>
+<p>The CSIIR_V6 sub-zone was created to provide V6 capability for a project within the CSIIR group in the Computer Science &amp; Engineering Division at ORNL</p>
+
+<h2 id="arm-dmf-sub-protection-zone">ARM-DMF (sub protection zone)</h2>
+<p>The ARM-DMF sub-zone was created for the ARM DMF project</p>
+
+</section>
+</body>
+
+</html>
